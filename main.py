@@ -45,6 +45,7 @@ class NeteaseDownloader(threading.Thread):
     def download(self,url):
         self.url_text = url
         self.musicData = []
+        self.list_name = os.path.split(url)[1]
         self.musicData = self.getMusicData(self.url_text.replace("#/", ""))
         if len(self.musicData) > 1:
             self.start()
@@ -70,11 +71,18 @@ class NeteaseDownloader(threading.Thread):
 
     def getMusicData(self, url):
         headers = {'User-Agent': self.user_agent}
-        webData = requests.get(url, headers=headers).text
+        # webData = requests.get(url, headers=headers).text
+        webData = None
+        with open(url,'r') as f :
+            webData = f.read()
         soup = BeautifulSoup(webData, 'lxml')
-        find_list = soup.find('ul', class_="f-hide").find_all('a')
-        self.list_name = soup.find_all(name='h2',attrs={"class":"f-ff2 f-brk"})
-        self.list_name = str(self.list_name).split('<')[-2].split('>')[-1]
+        find_list = soup.find_all('div', class_="ttc")
+        res_list = []
+        for each in find_list:
+            res_list.append(each.find('a'))
+        find_list = res_list
+        # self.list_name = soup.find_all(name='h2',attrs={"class":"f-ff2 f-brk"})
+        # self.list_name = str(self.list_name).split('<')[-2].split('>')[-1]
         if(not os.path.exists(os.path.join(save_root,self.list_name))):
             os.mkdir(os.path.join(save_root,self.list_name))
         tempArr = []
@@ -93,6 +101,7 @@ class NeteaseDownloader(threading.Thread):
             f.write(response.content)
             f.flush()
 
+
 if(len(urls) == 0):
     print("Reminder: You must specify url in config.json")
 
@@ -101,4 +110,5 @@ for url in urls:
     try:
         frame.download(url)
     except:
-        print("Fail to download:" ,url)
+        print("Download ",url,"Failed!!!")
+    
