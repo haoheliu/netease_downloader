@@ -7,8 +7,11 @@
 3. 将文件a的路径填入config.json，然后python main.py就可以下载了
 
 用之前记得装这几个包：
+
+```python
 pip install lxml
 pip install bs4
+```
 
 也不知道这个方法多久会过期，看网易云音乐网页版什么时候改版吧。
 
