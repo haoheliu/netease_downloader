@@ -6,6 +6,13 @@
 2. 打开网易云音乐网页版，登陆，点进去这个歌单，右键，inspect，然后在最终的html中找到class="n-songtb"的div，将这一块复制下来到一个文件a。
 3. python main.py a 就可以下载了
 
+用之前记得装这几个包：
+
+```python
+pip install lxml
+pip install bs4
+```
+
 也不知道这个方法多久会过期，看网易云音乐网页版什么时候改版吧。
 
 用之前记得安装一些包：
