@@ -4,11 +4,22 @@
 
 1. 创建一个歌单，将想要下载的歌曲放进去（可以打开别人的歌单，然后在客户端可以批量选中后收藏到自己的歌单）。
 2. 打开网易云音乐网页版，登陆，点进去这个歌单，右键，inspect，然后在最终的html中找到class="n-songtb"的div，将这一块复制下来到一个文件a。
-3. 将文件a的路径填入config.json，然后python main.py就可以下载了
+3. python main.py a 就可以下载了
 
 也不知道这个方法多久会过期，看网易云音乐网页版什么时候改版吧。
 
+用之前记得安装一些包：
 
+```python
+pip install lxml 
+pip install bs4
+```
+
+一个小例子:
+
+```python
+python main.py meta/test_meta
+```
 
 由于网易云音乐改版，以下内容于2020.03作废：
 

@@ -6,16 +6,18 @@ import os
 import json
 import re
 from bs4 import BeautifulSoup
+from html.parser import HTMLParser
+import sys
 
 def load_json(fname):
     with open(fname,'r') as f:
         data = json.load(f)
         return data
 
-Config = load_json("config.json")
+html_parser = HTMLParser()
 
-save_root = Config['save_path']
-urls = Config['urls']
+save_root = "."
+url = sys.argv[1]
 
 class NeteaseDownloader(threading.Thread):
     musicData = []
@@ -75,6 +77,7 @@ class NeteaseDownloader(threading.Thread):
         webData = None
         with open(url,'r') as f :
             webData = f.read()
+            webData = html_parser.unescape(webData)
         soup = BeautifulSoup(webData, 'lxml')
         find_list = soup.find_all('div', class_="ttc")
         res_list = []
@@ -102,13 +105,10 @@ class NeteaseDownloader(threading.Thread):
             f.flush()
 
 
-if(len(urls) == 0):
-    print("Reminder: You must specify url in config.json")
 
-for url in urls:
-    frame = NeteaseDownloader(1, "Thread-1", 1)
-    try:
-        frame.download(url)
-    except:
-        print("Download ",url,"Failed!!!")
+frame = NeteaseDownloader(1, "Thread-1", 1)
+#try:
+frame.download(url)
+#except:
+#    print("Download ",url,"Failed!!!")
     
